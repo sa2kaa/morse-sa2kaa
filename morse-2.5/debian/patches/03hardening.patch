@@ -1,0 +1,45 @@
+Description: Hardening
+Author: Nanakos Chrysostomos <nanakos@wired-net.gr>
+
+Index: morse-2.5/morse.d/Makefile
+===================================================================
+--- morse-2.5.orig/morse.d/Makefile
++++ morse-2.5/morse.d/Makefile
+@@ -22,19 +22,19 @@ morse:	morse${DEVICE}
+ 	ln morse${DEVICE} $@
+ 
+ morseX11:	morse.o beepX11.o alarm.o
+-	$(CC) $(X11LIBS) -o $@ morse.o beepX11.o alarm.o
++	$(CC) $(X11LIBS) $(LDFLAGS) -o $@ morse.o beepX11.o alarm.o
+ 
+ morseLinux:	morse.o beepLinux.o alarm.o
+-	$(CC) -o $@ morse.o beepLinux.o alarm.o -lm
++	$(CC) $(LDFLAGS) -o $@ morse.o beepLinux.o alarm.o -lm
+ 
+ morseOSS:	morse.o beepOSS.o
+-	$(CC) $(CFLAGS) -o $@ morse.o beepOSS.o -lm
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ morse.o beepOSS.o -lm
+ 
+ morsePA:	morse.o beepPA.o
+-	$(CC) $(CFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o -lm $(PA_LIBS)
++	$(CC) $(CFLAGS) $(LDFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o -lm $(PA_LIBS)
+ 
+ morseALSA:	morse.o beepALSA.o
+-	$(CC) $(CFLAGS) $(ALSA_CFLAGS) -o $@ morse.o beepALSA.o -lm $(ALSA_LIBS)
++	$(CC) $(CFLAGS) $(LDFLAGS) $(ALSA_CFLAGS) -o $@ morse.o beepALSA.o -lm $(ALSA_LIBS)
+ 
+ morse.o:	beep.h Makefile
+ beepX11.o:	beep.h alarm.h
+Index: morse-2.5/qso.d/Makefile
+===================================================================
+--- morse-2.5.orig/qso.d/Makefile
++++ morse-2.5/qso.d/Makefile
+@@ -7,7 +7,7 @@ INCLUDES = antenna.h callsign.h city.h c
+ all:	QSO
+ 
+ QSO:	$(OBJECTS)
+-	$(CC) -o $@ $(OBJECTS)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJECTS)
+ 
+ init_str.o:	$(INCLUDES)
+ 

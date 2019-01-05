@@ -1,0 +1,15 @@
+Description: Fix AlarmSet function definition and declaration match.
+Author: Nanakos Chrysostomos <nanakos@wired-net.gr>
+Bug-Debian: http://bugs.debian.org/749420
+
+--- morse-2.5.orig/morse.d/alarm.c
++++ morse-2.5/morse.d/alarm.c
+@@ -16,7 +16,7 @@ static void ualarm();
+ static void AlarmHandler();
+ 
+ void AlarmSet(time)
+-    int time;
++    time_t time;
+ {
+     struct sigaction handler;
+ 

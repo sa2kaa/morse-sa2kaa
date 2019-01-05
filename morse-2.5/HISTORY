@@ -1,0 +1,86 @@
+		History of the "Morse Classic" trainer
+
+Eric S. Raymind <esr@thyrsus.com>, November 2012 (release 2.5):
+    Code audited with cppcheck, warnings fixed up.
+    Declare a public repository and Ohloh page in the control file.
+
+Neale Pickett <neale@woozle.org>, June 2011 (release 2.4):
+    Add beep for ALSA
+
+Thomas Horsten <thomas@horsten.com>, November 2010 (release 2.3):
+    Fixed the -A, -B, and -S options (-B was always active, -A and -S
+    had no effect).
+    Only include prosigns if -B is specified, per the documentation.
+    Added '@' character (.--.-.), in use if -B is enabled.
+    Changed representation of <SN> prosign from '@' to '~' to accommodate '@'.
+    Don't crash if char is signed and a negative value is sent.
+
+Thomas Horsten <thomas@horsten.com>, October 2010 (release 2.2):
+    Add beep for PulseAudio.
+
+Jay Maynard (K5ZC) <jmaynard@conmicro.com>, January 2005 (release 2.1):
+    Mac OS X port patches.
+
+Eric S. Raymond <esr@thyrsus.com>, January 2005 (release 2.0):
+    Accepted maintainer's baton from Joe Dellinger and Paul J. Drongowski.
+    Dusted it off, cleaned it up to modern C standards. 
+    Changed ALLINTERNATIONAL to runtime -A option.
+    Changed ALLPROSIGNS to runtime -S option.
+    Changed ALLPUNCTUATION to runtime -B option.
+    Changed ERROR_FREQUENCY to runtime -x option.
+    Changed ERROR_VOLUME to runtime -X option.
+    Dropped BSD signal and tty support, it's all POSIX now.
+    QSO assumes that srand48/lrand48 is available, so morse will too.
+    Wrote the manual page.
+    Updated all code to use ANSI prototypes.
+    Named it "Morse Classic" in recognition of its ancient BSD-Reno roots and
+    to distinguish it from Alan Cox's morse program.
+
+Jacek M. Holeczek <holeczek@us.edu.pl>, March/April 2000:
+    Fixed some source code files so that no warnings from -Wall appear.
+    The character set made compatible with the International Morse Code.
+    Added the -n NUM, -R NUM, -N NUM, -C 'STRING', -q options.
+    Added beep for the AdLib/SoundBlaster FM chip and for the Open Sound
+    System (OSS) /dev/dsp device.
+    Note: The code uses directly ANSI sequences "\E[7m" to turn the inverse
+          video mode on and "\E[0m" to turn all video attributes off.
+          One should rewrite the openterminal function to provide the
+          enter_standout_mode "smso/so" and exit_standout_mode "rmso/se"
+          terminfo/termcap terminal string capabilities.
+
+Joe Dellinger <joe@sep.stanford.edu>, November 1994:
+    Fixed a bug in the USG termio calls.
+    Added an option to make the "error" beep come out via the beep
+    routines instead of by printing a control-G.
+
+Joe Dellinger <joe@sep.stanford.edu>, April 1994:
+    Finally got around to getting my license: WH6UR
+
+Marc Unangst (N8VRH), <mju@mudos.ann-arbor.mi.us>, December 1992:
+    Added System V support.
+
+The program was originally written by Joe Dellinger at the Hawaii
+Institute of Geophysics (but he moved to Oklahoma in July 1994).
+
+  * First alpha on Tue Aug 11 14:01:02 HST 1992
+  * Second alpha Thu Nov 26 03:24:19 HST 1992
+  * submitted to comp.sources.misc Dec 15 1993
+  * Revised version submitted to comp.sources.misc Nov 22 1994
+
+Joe had this to say about the origin of the program:
+
+   This code is (ridiculously) heavily modified from morse.c from the Reno 
+   UNIX distribution. I (Joe) also used slightly modified versions of a 
+   subroutine from Richard Ottolini at Unocal for Sun workstation tone 
+   generation.  Scott Seligman at Stanford added support for other sorts 
+   of devices and made several other changes. John Shalamskas helped test 
+   and made comments.
+
+(Note that Sun support and the beeper code for most of these odd devices 
+was long obsolete and has been removed.)
+
+
+
+
+
+

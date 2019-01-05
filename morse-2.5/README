@@ -1,0 +1,33 @@
+This is Morse Classic, a generic morse-code practice utility for Unix systems.
+You'll invoke it as "morse"; the full name is to distinguish it from Alan
+Cox's "morse" program.
+
+Currently supported devices:
+ X11:    The X11 window system. (Warning: not all X11 implementations handle
+         duration and frequency of beeps properly!)
+ Linux:  The IBM PC console speaker.
+ OSS:    Open Sound System /dev/dsp device.  Also works with the newer 
+         ALSA Linux sound system using the legacy OSS device.
+ PA:     PulseAudio using the pulse-simple client API.
+ ALSA:   ALSA Linux sound system /dev/snd/* device.
+
+Adding a new device is as simple as creating a new implementation of the
+beep.h interface. See beep*.[ch] for examples and documentation.
+Please send any additions to the maintainers.
+
+A modified version of the program "QSO" by Paul J. Drongowski is also included.
+
+For the character set this trainer generates, see the manual page.
+Special Characters and Groups (never included, placed here for completeness) :
+
+Multiplication sign  -..-  (the same as x, ISO 8859-1 code 215 ?)
+
+"Mistake, delete the last word"  ........  (actually six or more dots are
+used for this purpose, eight dots are recommended).
+
+Cut Numbers :
+1   .-      6   -...           1   .-      6   -....
+2   ..-     7   --.            2   ..-     7   -...
+3   .--     8   -..            3   ...-    8   -..
+4   ...-    9   -.             4   ....-   9   -.
+5   ...     0   -              5   .       0   -

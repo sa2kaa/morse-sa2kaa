@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE refentry PUBLIC 
+   "-//OASIS//DTD DocBook XML V4.1.2//EN"
+   "docbook/docbookx.dtd">
+<refentry id='morse.1'>
+<refmeta>
+<refentrytitle>morse</refentrytitle>
+<manvolnum>1</manvolnum>
+<refmiscinfo class='date'>January 2005</refmiscinfo>
+<refmiscinfo class='productname'>morse</refmiscinfo>
+<refmiscinfo class='source'>morse</refmiscinfo>
+<refmiscinfo class='manual'>Education</refmiscinfo>
+</refmeta>
+<refnamediv id='name'>
+<refname>morse</refname>
+<refname>QSO</refname>
+<refpurpose>Morse-code trainer and QSO generator for aspiring radio hams</refpurpose>
+</refnamediv>
+<refsynopsisdiv id='synopsis'>
+
+<cmdsynopsis>
+  <command>morse</command>  
+    <arg choice='opt'>-i </arg>
+    <arg choice='opt'>-I </arg>
+    <arg choice='opt'>-r </arg>
+    <arg choice='opt'>-n <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-R <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-N <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-C <replaceable>charset</replaceable></arg>
+    <arg choice='opt'>-w <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-f <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-v <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-g <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-f <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-e </arg>
+    <arg choice='opt'>-c </arg>
+    <arg choice='opt'>-b </arg>
+    <arg choice='opt'>-a </arg>
+    <arg choice='opt'>-l </arg>
+    <arg choice='opt'>-m </arg>
+    <arg choice='opt'>-t </arg>
+    <arg choice='opt'>-T </arg>
+    <arg choice='opt'>-s </arg>
+    <arg choice='opt'>-q </arg>
+    <arg choice='opt'>-p <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-E <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-M <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-d </arg>
+    <arg choice='opt'>-A </arg>
+    <arg choice='opt'>-B </arg>
+    <arg choice='opt'>-S </arg>
+    <arg choice='opt'>-x <replaceable>num</replaceable></arg>
+    <arg choice='opt'>-X <replaceable>num</replaceable></arg>
+    <arg rep='repeat' choice='opt'><replaceable>word</replaceable></arg>
+</cmdsynopsis>
+
+</refsynopsisdiv>
+
+<refsect1 id='description'><title>DESCRIPTION</title>
+
+<para>The <command>morse</command> program is a Morse-code trainer
+intended to help aspiring radio hams pass the 5-word-per-minute
+Element 1 test.  It can take test text from a text file on standard
+input, or test words from its command-line arguments, or generate
+random text (-r) or play back what you type (-i).</para>
+
+<para>A helper program, <command>QSO</command>, generates plausible
+QSOs that can be fed to the standard input of <command>morse</command>.</para>
+
+<para>The following options control the behavior of
+<command>morse</command>:</para>
+
+<variablelist>
+<varlistentry>
+<term>-i</term>
+<listitem>
+    <para>Play what you type.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-I</term>
+<listitem>
+    <para>Like -i but don't turn off keyboard echoing.</para>
+</listitem>
+</varlistentry> 
+<varlistentry>
+<term>-r</term>
+<listitem>
+    <para>Generate random text. Starts out slanted towards easy
+    letters, then slants towards ones you get wrong.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-n NUM</term>
+<listitem>
+    <para>Make words (groups) NUM characters long.
+    Valid values are between 1 and 20.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-R NUM</term>
+<listitem>
+    <para>Set the total time (in minutes) to generate text.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-N NUM (default 0 means unlimited)</term>
+<listitem>
+    <para>Set the total number of words (groups) to generate.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-C 'STRING' (default all available characters)</term>
+<listitem>
+    <para>Select characters to send from this STRING only.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-w </term>
+<listitem>
+    <para>words_per_minute</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-f</term>
+<listitem>
+    <para>frequency_in_hertz</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-v</term>
+<listitem>
+    <para>volume (zero to one, rather nonlinear)</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-g</term>
+<listitem>
+    <para>alternate_frequency (toggles via control-G in input FILE 
+    at a word break)</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-F</term>
+<listitem>
+    <para>Farnsworth_character_words_per_minute</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-e</term>
+<listitem>
+    <para>leave off the &lt;SK&gt; sound at the end</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-c</term>
+<listitem>
+    <para>complain about illegal characters instead of just ignoring
+    them</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-b</term>
+<listitem>
+    <para>print each word before doing it</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-a</term>
+<listitem>
+    <para>print each word after doing it</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-l</term>
+<listitem>
+    <para>print each letter just before doing it</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-m</term>
+<listitem>
+    <para>print morse dots and dashes as they sound
+    (this printing-intensive option slows the wpm down!)</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-t</term>
+<listitem>
+    <para>Type along with the morse, but don't see what
+    you're typing (unless you make a mistake).
+    You are allowed to get ahead as much as you want.
+    If you get too far behind it will stop and resync with you.
+    You can force it to resync at the next word end by hitting
+    control-H.
+    Hit ESC to see how you are doing, control-D to end.
+    (The rightmost space in the printout marks where the average is.
+    Farther left spaces separate off blocks of letters that are
+    about twice as probable as the average to occur, three times, etc.)</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-T</term>
+<listitem>
+    <para>Like -t but see your characters (after they are played).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-s</term>
+<listitem>
+    <para>Stop after each character and make sure you get it
+ right. (implies -t)</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-q</term>
+<listitem>
+    <para>Quietly resyncs with your input (after you make a
+    mistake).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-p NUM</term>
+<listitem>
+    <para>Make you get it right NUM times, for penance. (implies -s).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-E NUM</term>
+<listitem>
+    <para>If your count of wrong answers minus right answers for a
+    given character exceeds this, the program will start prompting
+    you.  If above the maximum error prompt it will never
+    prompt (implies -t).</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-M NUM</term>
+<listitem>
+    <para>If you get more than this number of characters behind, pause until you
+    do your next letter. 1 behind is normal, 0 behind means never pause.
+    This option mplies -t.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-d</term>
+<listitem>
+    <para>Dynamically speed up or slow down depending on how you are doing.
+    (if also-s, then -d <emphasis>only speeds up</emphasis>!)</para>
+</listitem>
+</varlistentry> 
+<varlistentry>
+<term>-A</term>
+<listitem>
+    <para>Add ISO 8859-1 (Latin-1) signs to test set.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-B</term>
+<listitem>
+    <para>Add uncommon punctuation to test set.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-S</term>
+<listitem>
+    <para>Add uncommon prosigns to test set.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-X</term>
+<listitem>
+    <para>Set error volume. Error volume 0 means use console
+    speaker.</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>-x</term>
+<listitem>
+    <para>Set frequency of error tone.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+<para>Here is the basic International Morse codest that the program
+will train you in:</para>
+
+<screen>
+        A  .-          N  -.          1  .----       .  .-.-.-
+        B  -...        O  ---         2  ..---       ,  --..--
+        C  -.-.        P  .--.        3  ...--       ?  ..--..
+        D  -..         Q  --.-        4  ....-       (  -.--.
+        E  .           R  .-.         5  .....       -  -....-
+        F  ..-.        S  ...         6  -....
+        G  --.         T  -           7  --...
+        H  ....        U  ..-         8  ---..
+        I  ..          V  ...-        9  ----.
+        J  .---        W  .--         0  -----
+        K  -.-         X  -..-        /  -..-.
+        L  .-..        Y  -.--        +  .-.-.
+        M  --          Z  --..        =  -...-
+</screen>
+
+<para>The following characters are included if one uses the -B option:</para>
+
+<screen>
+        )  -.--.-      "  .-..-.      _  ..--.-
+        '  .----.      :  ---...      ;  -.-.-.
+        $  ...-..-     !  -.-.--      @  .--.-.
+</screen>
+
+<para>The following procedural signals (prosigns) are also included if
+one uses -B:</para>
+
+<screen>
+&lt;AR&gt;    "+" over, end of message
+&lt;AS&gt;    "*" please stand by (&lt;AS&gt; 5  Wait 5 Minutes) (".-...")
+&lt;BT&gt;    "=" (double dash) pause, break for text
+CL          going off the air (clear)
+CQ          calling any station
+K           go, invite any station to transmit
+&lt;KN&gt;    "(" go only, invite a specific station to transmit
+R           all received OK
+&lt;SK&gt;    "%" end of contact (sent before call) ("...-.-", known also as &lt;VA&gt;)
+</screen>
+
+<para>The following less-used prosigns are included if one
+uses the -S option:</para>
+
+<screen>
+&lt;AA&gt;    "^" new line (".-.-", the same as :a, ae)
+&lt;BK&gt;    "#" invite receiving station to transmit ("-...-.-")
+&lt;KA&gt;    "&amp;" attention ("-.-.-")
+&lt;SN&gt;    "~" understood ("...-.")
+</screen>
+
+<para>The following characters are included if one uses the -A option:</para>
+
+<screen>
+        :a  .-.-   (also for ae, the same as &lt;AA&gt;)
+        `a  .--.-  (also oa, danish a with ring over it)
+        ch  ----   (bar-ch ?, bar-h ?, ISO 8859-1 code 199 and 231 ?)
+        -d  ..--.  (eth, overstrike d with -, ISO 8859-1 code 208 and 240)
+        `e  ..-..
+        ~n  --.--
+        :o  ---.   (also for oe)
+        :u  ..--   (also for ue)
+        ]p  .--..  (thorn, overstrike ] with p, ISO 8859-1 code 222 and 254)
+        paragraph  .-.-..  (ISO 8859-1 code 167 ?)
+</screen>
+
+<para>For the raw beginner trying to learn morse code, we recommend
+the following sequence:</para>
+
+<procedure>
+<step>
+<para>Start learning the alphabet:</para>
+<programlisting>
+morse -r -s -T -d -w 5 -F 15 -p 5 -E -10
+</programlisting>
+</step>
+<step>
+<para>Then drill drill drill:</para>
+<programlisting>
+morse -r -s -T -d -w 5 -F 15 -p 5 -E 0
+</programlisting>
+</step>
+<step>
+<para>Real-time drill, with hints if you really need it:</para>
+<programlisting>
+morse -r -T -d -w 5 -F 15 -M 2 -E 4
+</programlisting>
+</step>
+<step>
+<para>Simulated test:</para>
+<programlisting>
+QSO | morse -e -T -d -w 5 -F 15
+</programlisting>
+</step>
+<step>
+<para>The dreaded random-letter test:</para>
+<programlisting>
+morse -r -T -d -w 5 -F 15
+</programlisting>
+</step>
+<step>
+<para>Finally try for greater and greater speed:</para>
+<programlisting>
+morse -r -T -d -w 13 -F 24
+</programlisting>
+</step>
+</procedure>
+</refsect1>
+
+<refsect1 id='author'><title>AUTHORS</title> 
+<para>Joe Dellinger <email>joe@montebello.soest.hawaii.edu</email>.</para>
+<para>Updated 2005 by Eric S. Raymond <email>esr@thyrsus.com</email>.</para>
+<para>Updated 2010 by Thomas Horsten <email>thomas@horsten.com</email>.</para>
+<para>Other contributions by Jacek M. Holeczek and Marc Unangst.</para> 
+</refsect1> 
+</refentry>

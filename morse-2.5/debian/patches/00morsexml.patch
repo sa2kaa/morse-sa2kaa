@@ -1,0 +1,16 @@
+Description: Added an xml stub for morseX11.1 and morseLinux.1 man files.
+Author: Nanakos Chrysostomos <nanakos@wired-net.gr>
+
+--- morse-2.3.orig/morse.xml
++++ morse-2.3/morse.xml
+@@ -14,6 +14,10 @@
+ <refnamediv id='name'>
+ <refname>morse</refname>
+ <refname>QSO</refname>
++<refname>morseX11</refname>
++<refname>morseLinux</refname>
++<refname>morseOSS</refname>
++<refname>morseALSA</refname>
+ <refpurpose>Morse-code trainer and QSO generator for aspiring radio hams</refpurpose>
+ </refnamediv>
+ <refsynopsisdiv id='synopsis'>

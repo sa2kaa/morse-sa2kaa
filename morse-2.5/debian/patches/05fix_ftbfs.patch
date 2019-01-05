@@ -1,0 +1,15 @@
+Description: move X11LIBS later in cc command
+Author: Nanakos Chrysostomos <nanakos@wired-net.gr>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/770766
+
+--- morse-2.5.orig/morse.d/Makefile
++++ morse-2.5/morse.d/Makefile
+@@ -22,7 +22,7 @@ morse:	morse${DEVICE}
+ 	ln morse${DEVICE} $@
+ 
+ morseX11:	morse.o beepX11.o alarm.o
+-	$(CC) $(X11LIBS) $(LDFLAGS) -o $@ morse.o beepX11.o alarm.o
++	$(CC) $(LDFLAGS) -o $@ morse.o beepX11.o alarm.o $(X11LIBS)
+ 
+ morseLinux:	morse.o beepLinux.o alarm.o
+ 	$(CC) $(LDFLAGS) -o $@ morse.o beepLinux.o alarm.o -lm

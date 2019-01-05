@@ -1,0 +1,39 @@
+Author: Kamal Mostafa <kamal@whence.com>
+Bug-Debian: https://bugs.debian.org/784285
+Description: fix pa_simple_write error with mono output
+Bug-Debian: https://bugs.debian.org/784285
+Bug-Ubuntu: https://launchpad.net/bugs/1461755
+
+   * Open a mono (not stereo) PulseAudio output stream and hence avoid
+     improperly passing non-multiples of the frame size to pa_simple_write
+     (Closes: #784285, LP: #1461755).
+
+--- morse-2.5.orig/morse.d/beepPA.c
++++ morse-2.5/morse.d/beepPA.c
+@@ -33,7 +33,7 @@ static pthread_cond_t beep_cv = PTHREAD_
+ static const pa_sample_spec sample_format = {
+         .format = PA_SAMPLE_S16LE,
+         .rate = 44100,
+-        .channels = 2
++        .channels = 1
+ };
+ 
+ static pa_simple *snddev;
+@@ -46,7 +46,7 @@ static struct {
+ 
+ static void play_tone()
+ {
+-    int len = (int)(sample_format.rate*beep_info.time/1000.0*2);
++    int len = (int)(sample_format.rate*beep_info.time/1000.0);
+     int16_t *sample;
+ 
+     sample = malloc(len*sizeof(sample[0]));
+@@ -60,7 +60,7 @@ static void play_tone()
+ 	double v;
+ 	tt = beep_info.time/1000.0;
+ 	for (c=0; c<len; c+=2) {
+-	    t = c/((double)sample_format.rate*2.0); /* Time in s from start */
++	    t = c/((double)sample_format.rate); /* Time in s from start */
+ 	    v = (beep_info.volume/100.0) * sin(M_PI * 2 * t * beep_info.pitch);
+ 	    if (t < 0.01) {
+ 		/* Fade in softly over the first 10 ms */

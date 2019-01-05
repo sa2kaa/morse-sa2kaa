@@ -1,0 +1,20 @@
+Description: fix -X crash
+Author: Kamal Mostafa <kamal@whence.com>
+Bug-Debian: https://bugs.debian.org/716099
+Bug-Debian: https://bugs.debian.org/716111
+Bug-Debian: https://bugs.debian.org/716218
+Bug-Debian: https://bugs.debian.org/716298
+
+The -X switch references optarg so needs ":" in the getopt() string.
+
+--- morse-2.5.orig/morse.d/morse.c
++++ morse-2.5/morse.d/morse.c
+@@ -345,7 +345,7 @@ struct sigaction handler;
+     }
+ 
+     /* DGHJKLMOPQUVWYZhjkouyz are still available */
+-    while ((ch = getopt (argc, argv, "ABC:E:F:IM:N:R:STXabcdef:g:ilmn:p:qrstv:w:x:")) != EOF)
++    while ((ch = getopt (argc, argv, "ABC:E:F:IM:N:R:STX:abcdef:g:ilmn:p:qrstv:w:x:")) != EOF)
+ 	switch ((char) ch)
+ 	{
+ 	case 'A':

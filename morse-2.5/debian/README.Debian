@@ -1,0 +1,21 @@
+morse for Debian
+----------------
+
+This package is NOT the same as morse in Debian/Woody. The old morse package
+was written by Alan Cox and Eric S. Raymond for some reason decided to give
+it the same name. To distinguish it from Alan Cox's "morse" program, he calls
+his program Morse Classic, although the binary name doesn't reflect that.
+
+Two binaries are include in this package. The ordinary 'morse' needs a
+standard linux text terminal and won't sound when running X. The 'morseX11'
+binary needs X to sound.
+
+I could not get the OSS implementation to work, sorry...
+
+ -- Joop Stakenborg <pa3aba@debian.org>, Tue, 21 Feb 2006 23:36:14 +0100
+
+I have added a PulseAudio driver and it is now installed by default as
+/usr/bin/morse. The console driver version is installed as
+/usr/bin/morseLinux and the X11 driver is /usr/bin/morseX11.
+
+ -- Thomas Horsten <thomas@horsten.com>, Sat, 09 Oct 2010 13:32:00 +0100

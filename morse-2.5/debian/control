@@ -1,0 +1,21 @@
+Source: morse
+Section: hamradio
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian Hamradio Maintainers <debian-hams@lists.debian.org>
+Uploaders: Nanakos Chrysostomos <nanakos@wired-net.gr>, Kamal Mostafa <kamal@whence.com>
+Homepage: http://www.catb.org/~esr/morse/
+Build-Depends: debhelper (>= 7.0.0), libx11-dev, libpulse-dev, xmlto (>= 0.0.23-2), libasound2-dev, dpkg-dev (>= 1.16.1~)
+Standards-Version: 3.9.6
+
+Package: morse
+Architecture: any
+Pre-Depends: dpkg (>= 1.15.6~)
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: pulseaudio
+Description: training program about morse-code for aspiring radio hams
+ It can generate random tests or simulated QSOs resembling those
+ used in the ARRL test (a QSO generator is included). There are a
+ plethora of options to vary the training method. In one of the simpler
+ modes, this program will take text from standard input and render it
+ as Morse-code beeps.

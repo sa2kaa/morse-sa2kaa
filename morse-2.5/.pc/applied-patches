@@ -1,0 +1,6 @@
+00morsexml.patch
+01alarm_time_t.patch
+03hardening.patch
+04fix-pa_simple_write-with-mono-output.patch
+05fix_ftbfs.patch
+06fix_-X_handling.patch

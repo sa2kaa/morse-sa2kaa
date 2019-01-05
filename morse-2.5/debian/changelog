@@ -1,0 +1,112 @@
+morse (2.5-1build1) bionic; urgency=high
+
+  * No change rebuild to pick up -fPIE compiler default
+
+ -- Balint Reczey <rbalint@ubuntu.com>  Tue, 03 Apr 2018 12:35:18 +0000
+
+morse (2.5-1) unstable; urgency=low
+
+  * New upstream release.
+  * Bump S-V to 3.9.6.
+  * Clean Lintian messages.
+  * Fix AlarmSet declaration and definition match (Closes: Bug#749420).
+  * Update watch file (Closes: Bug#784861).
+  * Fix build (omit morseALSA and morseLinux) for non-Linux arches
+    - drop 02makefile.patch, build and install via debian/rules
+  * Fix -X crash (Closes: #716099, #716111, #716218, #716298)
+  * Adjust Maintainer/Uploaders fields
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Wed, 10 Jun 2015 11:26:20 +0300
+
+morse (2.4-3) unstable; urgency=high
+
+  * Open a mono (not stereo) PulseAudio output stream and hence avoid
+    improperly passing non-multiples of the frame size to pa_simple_write
+    (Closes: #784285, LP: #1461755). Thanks to Kamal Mostafa for providing
+    the patch.
+  * New patch fixing FTBFS (LP: #770766). Thanks to John Nogatch.
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Sat, 06 Jun 2015 12:26:41 +0300
+
+morse (2.4-2) unstable; urgency=low
+
+  * Added to Build-Depends: libasound2-dev library for building morseALSA. 
+  * morse package now installs morseALSA binary. (Closes: Bug#642607).
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Sun, 25 Sep 2011 13:04:07 +0300
+
+morse (2.4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Fri, 17 Jun 2011 13:57:00 +0300
+
+morse (2.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Update debian/control
+    - Update to S-V 3.9.2: no changes needed.
+    - Fixed lintian warning for the description synopsis.
+  * Fixed the -A, -B, and -S options (-B was always active, 
+    -A and -S had no effect).
+  * Only include prosigns if -B is specified, per the documentation.
+  * Added '@' character (.--.-.), in use if -B is enabled.
+  * Changed representation of <SN> prosign from '@' to '~' to accommodate '@'.
+  * Don't crash if char is signed and a negative value is sent.
+  * Added an xml stub for morseX11.1 and morseLinux.1 man files.
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Sun, 01 May 2011 16:53:08 +0200
+
+morse (2.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added PulseAudio driver from Thomas Horsten <thomas@horsten.com>.
+  * Updated S-V to 3.9.1
+  * Added Recommends: pulseaudio to debian/control file.
+  * Added Homepage: http://www.catb.org/~esr/morse/ field to debian/control
+    file.
+  * Removed all commented dh_ commands from debian/rules file.
+  * Updated the debian/copyright file.
+  * debian/patches/00makefile: Updated to cover pulseaudio device.
+  * debian/patches/02morsemake: Dropped, we need the symbolic link to the
+    morse binary.
+  * debian/patches/03morse, debian/patches/04qso, debian/patches/05grammar:
+    Dropped, merged upstream.
+  * debian/patches/02morseLinux: Added to add new alias manpage.
+ 
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Sat, 30 Oct 2010 11:42:16 +0300
+
+morse (2.1-4) unstable; urgency=low
+
+  * New package maintainer. (Closes: Bug#553991).
+  * Lintian cleaning.
+  * Update S-V to 3.8.4
+      - debian/copyright file is now UTF-8 encoded.
+  * Added co-authors to debian/copyright file.
+  * Added ${misc:Depends} to control file.
+  * Added debian/source/format file.
+  * Removed "-" from rules file because the package uses
+    a static makefile.
+  * Bumped debhelper versioned Build-Depends to 7, and updated
+    debian/compat.
+
+ -- Nanakos Chrysostomos <nanakos@wired-net.gr>  Wed, 19 May 2010 01:04:44 +0000
+
+morse (2.1-3) unstable; urgency=low
+
+  * Retiring - set the package maintainer to Debian QA Group.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Mon, 02 Nov 2009 15:48:45 +0000
+
+morse (2.1-2) unstable; urgency=low
+
+  * Add libx11-dev build dependency. Closes: #357570. Thanks Martin.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Sat, 18 Mar 2006 09:47:15 +0100
+
+morse (2.1-1) unstable; urgency=low
+
+  * Initial release Closes: #325242.
+
+ -- Joop Stakenborg <pa3aba@debian.org>  Wed, 22 Feb 2006 20:05:30 +0100
+
