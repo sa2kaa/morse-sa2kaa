@@ -250,7 +250,7 @@ static void            dowords (int  c); //OLTA
 static void            morse (int c);
 static void            show (char *s);
 static void            testaddchar (char c);
-static void            youraddchar (unsigned char c);
+static void            youraddchar (int c);
 static void            pollyou (void);
 static void            tone (float hertz, float duration, float amplitude);
 static void            toneflush (void);
@@ -262,7 +262,7 @@ static void            report (void);
 static void            die (), suspend ();
 static void            cleanup ();
 
-static processMultiCharStream(unsigned char c, void (*charHandler)(unsigned char)); // OLTA added.
+static processMultiCharStream(unsigned char c, void (*charHandler)(int)); // OLTA added.
 
 
 
@@ -756,7 +756,7 @@ struct sigaction handler;
 		for (p = *argv; *p; ++p)
 		  {	
 			
-			printf("%x", (unsigned char) *p);//OLTA
+//			printf("%x", (unsigned char) *p);//OLTA
 #if 1
 			processMultiCharStream( (unsigned char) *p, dowords); //OLTA
 #else
@@ -772,7 +772,12 @@ struct sigaction handler;
 	{
 	    while ((ch = getchar ()) != EOF)
 	    {
+//			printf("HoHo ");//OLTA
+#if 1
+			processMultiCharStream( (unsigned char) ch, dowords); //OLTA
+#else
 			dowords (ch);
+#endif
 			if ((wordcount == 0) || timeout == 0) break;
 	      }
 	}
@@ -869,7 +874,7 @@ unsigned char           *wordp;
  * Increment the line position counter.
  * If a line gets too long, just cut it off by inserting a new line.
  */
-	printf("Do words!!!%d\n", c);//OLTA
+//	printf("Do words!!!%d\n", c);//OLTA
     if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE) linepos++;
     if (isspace (c) && ((linepos + wordlen) >= LINELENGTH)) c = '\n';
     if (c == '\n') linepos = 0;
@@ -1022,7 +1027,7 @@ unsigned char           *wordp;
 		}
 		else
 		{
-			printf("Add char ");
+//			printf("Add char ");//OLTA
 		    morse (*wordp);
 		}
 
@@ -1251,7 +1256,7 @@ unsigned char           *wordp;
 void
 morse (int c)
 {
-	printf("morse %d ", c );
+//	printf("morse %d ", c );//OLTA
     if ((isalpha (c) && (code[tolower(c)] == NULL)) || ((code[(int) '%'] == NULL) && ((c == EOF) || (c == '\004'))))
       c = ' ';
 
@@ -1433,10 +1438,10 @@ testaddchar (char c)
 }
 
 static void
-youraddchar (unsigned char c)
+youraddchar (int c)
 {
     yourpointer = (yourpointer + 1) % TESTBUFSZ;
-    yourstring[yourpointer] = c;
+    yourstring[yourpointer] = (unsigned char) c;
 #ifdef DEBUG
     fprintf (stderr, " <%c,%d> ", c, yourlength);
 #endif
@@ -1450,12 +1455,12 @@ youraddchar (unsigned char c)
     }
 }
 
-static processMultiCharStream(unsigned char c, void (*charHandler)(unsigned char))
+static processMultiCharStream(unsigned char c, void (*charHandler)(int))
 {
 	static bool multiChar = false;	
 	if ( utf8 ) {
 		if ( multiChar ) {
-			printf("?"); //OLTA
+//			printf("?"); //OLTA
 			switch ( c ) {
 				case 0xa5: 
  					charHandler((int) ((unsigned char)'\340')); // LATIN SMALL LETTER A WITH RING ABOVE
@@ -1807,16 +1812,16 @@ openterminal (void)
 static int
 readterminal (unsigned char **string)
 {
-/* This must be declared static! */
-static char     line[TESTBUFSZ];
-int             n;
+	/* This must be declared static! */
+	static char     line[TESTBUFSZ];
+	int             n;
 
     n = read (termfd, line, sizeof (line) - 1);
 
     if (n > 0)
     {
-	line[n] = '\0';
-	*string = line;
+		line[n] = '\0';
+		*string = line;
     }
     else
 	*string = NULL;
