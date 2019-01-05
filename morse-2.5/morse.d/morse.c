@@ -863,7 +863,7 @@ dowords (int c)
 {
 static int      wordc = 0;
 static char     word[MAXWORDLEN+1];
-char           *wordp;
+unsigned char           *wordp;
 
 /*
  * Increment the line position counter.
@@ -1022,6 +1022,7 @@ char           *wordp;
 		}
 		else
 		{
+			printf("Add char ");
 		    morse (*wordp);
 		}
 
@@ -1250,6 +1251,7 @@ char           *wordp;
 void
 morse (int c)
 {
+	printf("morse %d ", c );
     if ((isalpha (c) && (code[tolower(c)] == NULL)) || ((code[(int) '%'] == NULL) && ((c == EOF) || (c == '\004'))))
       c = ' ';
 
