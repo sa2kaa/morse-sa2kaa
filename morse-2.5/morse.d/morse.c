@@ -262,10 +262,9 @@ static void            report (void);
 static void            die (), suspend ();
 static void            cleanup ();
 
-static processMultiCharStream(unsigned char c, void (*charHandler)(int)); // OLTA added.
+static void processMultiCharStream(unsigned char c, void (*charHandler)(int)); // OLTA added.
 
-
-
+static void utf8_print(unsigned char c);
 
 int
 main (int argc, char **argv)
@@ -692,7 +691,7 @@ struct sigaction handler;
 		    if (showletters)
 		    {
 			toneflush ();
-			printf ("%c", yourchar);
+			utf8_print( yourchar );
 			fflush (stdout);
 		    }
 
@@ -756,12 +755,7 @@ struct sigaction handler;
 		for (p = *argv; *p; ++p)
 		  {	
 			
-//			printf("%x", (unsigned char) *p);//OLTA
-#if 1
 			processMultiCharStream( (unsigned char) *p, dowords); //OLTA
-#else
-		    dowords ((int) *p);
-#endif
 		    if ((wordcount == 0) || timeout == 0) break;
 		  }
 		if ((wordcount == 0) || timeout == 0) break;
@@ -772,12 +766,7 @@ struct sigaction handler;
 	{
 	    while ((ch = getchar ()) != EOF)
 	    {
-//			printf("HoHo ");//OLTA
-#if 1
 			processMultiCharStream( (unsigned char) ch, dowords); //OLTA
-#else
-			dowords (ch);
-#endif
 			if ((wordcount == 0) || timeout == 0) break;
 	      }
 	}
@@ -874,7 +863,6 @@ unsigned char           *wordp;
  * Increment the line position counter.
  * If a line gets too long, just cut it off by inserting a new line.
  */
-//	printf("Do words!!!%d\n", c);//OLTA
     if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE) linepos++;
     if (isspace (c) && ((linepos + wordlen) >= LINELENGTH)) c = '\n';
     if (c == '\n') linepos = 0;
@@ -980,7 +968,7 @@ unsigned char           *wordp;
 		    linepos = 0;
 		  }
 
-		printf ("%s", word);
+		printf ("%s", word); // TODO OLTA add utf8 print line.
 
 		if (showmorse || showletters || wordsafter || showtesting)
 		{
@@ -1012,7 +1000,9 @@ unsigned char           *wordp;
 		{
 		    toneflush ();
 		    /* Give them a quick hint */
-		    printf ("[%c]", *wordp);
+		    printf( "[" );
+			utf8_print( *wordp );
+			printf( "]" );
 		    fflush (stdout);
 
 		    morse (*wordp);
@@ -1027,7 +1017,6 @@ unsigned char           *wordp;
 		}
 		else
 		{
-//			printf("Add char ");//OLTA
 		    morse (*wordp);
 		}
 
@@ -1146,7 +1135,7 @@ unsigned char           *wordp;
 
 	    if (wordsafter)
 	    {
-		printf (" (%s)", word);
+		printf (" (%s)", word); // TODO OLTA Add utf8 printLine
 	    }
 
 	    if (wordsbefore || wordsafter || showmorse)
@@ -1167,7 +1156,7 @@ unsigned char           *wordp;
 		if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE)
 		{
 		    if (showletters)
-			printf ("%c", c);
+			utf8_print( c );
 
 		    if (showtesting)
 			testaddchar (c);
@@ -1204,7 +1193,7 @@ unsigned char           *wordp;
 	    if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE)
 	    {
 		if (showletters)
-		    printf ("%c", c);
+		    utf8_print( c );
 
 		if (showtesting)
 		    testaddchar (c);
@@ -1256,49 +1245,46 @@ unsigned char           *wordp;
 void
 morse (int c)
 {
-//	printf("morse %d ", c );//OLTA
-    if ((isalpha (c) && (code[tolower(c)] == NULL)) || ((code[(int) '%'] == NULL) && ((c == EOF) || (c == '\004'))))
-      c = ' ';
+    if ((isalpha (c) && (code[tolower(c)] == NULL)) || ((code[(int) '%'] == NULL) && ((c == EOF) || (c == '\004')))) {
+    	c = ' ';
+	}
+    if (showletters) {
+    	if ((c == EOF) || (c == '\004')) {
+	  		if (showmorse) {
+				printf ("<SK>");
+	    	} 
+			else {
+				printf ("%%");
+	      	}
+	  	}
+		else if (c == '.' && showmorse)
+		    printf ("<DOT>");
+		else if (c == '-' && showmorse)
+		    printf ("<DASH>");
+		else if (c == '+' && showmorse)
+		    printf ("<AR>");
+		else if (c == '*' && showmorse)
+		    printf ("<AS>");
+		else if (c == '=' && showmorse)
+		    printf ("<BT>");
+		else if (c == '(' && showmorse)
+		    printf ("<KN>");
+		else if (c == '%' && showmorse)
+		    printf ("<SK>");
+		else if (allprosigns) {
+		    if (c == '^' && (code[(int) '^'] != NULL) && showmorse)
+				printf ("<AA>");
+	    	else if (c == '#' && showmorse)
+				printf ("<BK>");
+	    	else if (c == '&' && showmorse)
+				printf ("<KA>");
+	    	else if (c == '~' && showmorse)
+				printf ("<SN>");
+    	}
+		else
+	    	utf8_print( c );
 
-    if (showletters)
-    {
-        if ((c == EOF) || (c == '\004'))
-	  {
-	    if (showmorse)
-	      {
-		printf ("<SK>");
-	      } else {
-		printf ("%%");
-	      }
-	  }
-	else if (c == '.' && showmorse)
-	    printf ("<DOT>");
-	else if (c == '-' && showmorse)
-	    printf ("<DASH>");
-	else if (c == '+' && showmorse)
-	    printf ("<AR>");
-	else if (c == '*' && showmorse)
-	    printf ("<AS>");
-	else if (c == '=' && showmorse)
-	    printf ("<BT>");
-	else if (c == '(' && showmorse)
-	    printf ("<KN>");
-	else if (c == '%' && showmorse)
-	    printf ("<SK>");
-	else if (allprosigns) {
-	     if (c == '^' && (code[(int) '^'] != NULL) && showmorse)
-		printf ("<AA>");
-	    else if (c == '#' && showmorse)
-		printf ("<BK>");
-	    else if (c == '&' && showmorse)
-		printf ("<KA>");
-	    else if (c == '~' && showmorse)
-		printf ("<SN>");
-        }
-	else
-	    printf ("%c", c);
-
-	fflush (stdout);
+		fflush (stdout);
     }
 
     if (isalpha (c))
@@ -1397,7 +1383,7 @@ char            c;
 
 	if (showmorse)
 	{
-	    printf ("%c", c);
+	    utf8_print( c );
 	    fflush (stdout);
 #ifdef FLUSHCODE
 	    toneflush ();
@@ -1417,7 +1403,7 @@ testaddchar (char c)
     testpointer = (testpointer + 1) % TESTBUFSZ;
     teststring[testpointer] = c;
 #ifdef DEBUG
-    fprintf (stderr, " (%c,%d,%d) ", c, testlength, behindness);
+    fprintf (stderr, " (%c,%d,%d) ", c, testlength, behindness); // TODO olta fix utf8 debug
 #endif
     testlength++;
     if (testlength > TESTBUFSZ)
@@ -1443,7 +1429,7 @@ youraddchar (int c)
     yourpointer = (yourpointer + 1) % TESTBUFSZ;
     yourstring[yourpointer] = (unsigned char) c;
 #ifdef DEBUG
-    fprintf (stderr, " <%c,%d> ", c, yourlength);
+    fprintf (stderr, " <%c,%d> ", c, yourlength); // TODO OLTA fix uf8 debug
 #endif
     yourlength++;
     if (yourlength > TESTBUFSZ)
@@ -1455,12 +1441,11 @@ youraddchar (int c)
     }
 }
 
-static processMultiCharStream(unsigned char c, void (*charHandler)(int))
+static void processMultiCharStream(unsigned char c, void (*charHandler)(int))
 {
 	static bool multiChar = false;	
 	if ( utf8 ) {
 		if ( multiChar ) {
-//			printf("?"); //OLTA
 			switch ( c ) {
 				case 0xa5: 
  					charHandler((int) ((unsigned char)'\340')); // LATIN SMALL LETTER A WITH RING ABOVE
@@ -1482,6 +1467,25 @@ static processMultiCharStream(unsigned char c, void (*charHandler)(int))
 		}
 	}
 }
+/*
+*  Transcode selected characters from Latin-1 to UTF-8
+*/
+static void utf8_print(unsigned char c) {
+	switch( c ) {
+		case (unsigned char) '\340':
+			printf("\195\133"); // c385h
+			break;
+		case (unsigned char) '\344':
+			printf("\195\132"); // c384h
+			break;
+		case (unsigned char) '\366':
+			printf("\195\150"); // c396h
+			break;
+		default:
+			printf("%c", c);
+			break;
+	}
+}
 
 static void
 pollyou (void)
@@ -1493,7 +1497,6 @@ pollyou (void)
 	bool multiChar = false;
     for (ii = 0; ii < num; ii++) {
 		processMultiCharStream(string[ii], youraddchar);
-//		printf( "Char 0x%x ", string[ii] );//OLTA
 	}
 }
 
@@ -1539,7 +1542,7 @@ int             resync;
 	    {
 		if (showtesting)
 		{
-		    printf ("%c", correctchar);
+		    utf8_print( correctchar );
 		    fflush (stdout);
 		}
 
@@ -1554,11 +1557,14 @@ int             resync;
 
 
 	    yourchar = yourstring[(yourpointer - yourlength + 1 + yourinc + TESTBUFSZ) % TESTBUFSZ];
-	    if (isalpha (yourchar))
-		yourcharnocase = yourchar - (isupper (yourchar) ? 'A' : 'a') + 'a';
-	    else
-		yourcharnocase = yourchar;
-
+	    if (isalpha (yourchar)) {
+			printf( "isalpha" );
+			yourcharnocase = yourchar - (isupper (yourchar) ? 'A' : 'a') + 'a';
+		}
+		else {
+			printf( "isnotalpha" );
+			yourcharnocase = yourchar;
+		}
 	    /* Did you type something rude? If so, just ignore it. */
 	    if (isspace (yourchar) || code[yourcharnocase] == NULL)
 	    {
@@ -1593,9 +1599,11 @@ int             resync;
 			  correctchar = teststring[(testpointer - testlength + 1 + testinc + TESTBUFSZ) % TESTBUFSZ];
 			  if (isspace (correctchar) || code[correctchar] == NULL)
 			    {
-			      if (showtesting) printf ("%c", correctchar);
+			      if (showtesting) utf8_print ( correctchar );
 			    } else {
-			      printf("%s%c%s", enter_standout_mode, correctchar, exit_standout_mode);
+			      printf("%s", enter_standout_mode );
+				  utf8_print( correctchar );
+				  printf("%s", exit_standout_mode);
 			    }
 			}
 		      fflush (stdout);
@@ -1620,7 +1628,10 @@ int             resync;
 
 		if (keepquiet > 0)
 		  {
-		    printf("%s%c%s", enter_standout_mode, correctchar, exit_standout_mode);
+		    printf( "%s", enter_standout_mode );
+			utf8_print( correctchar );
+		    printf( "%s", exit_standout_mode );
+
 		    fflush (stdout);
 		    keepquiet++;
 		  } else {
@@ -1635,11 +1646,12 @@ int             resync;
 			tone (error_frequency, 0.1, error_volume);
 		    } else
 			/* Beep using control-G */
-			printf ("\007");
-		    printf ("%c (%s) for %c (%s)\n",
-			    yourchar, code[yourcharnocase],
-			    correctchar, code[correctchar]);
-		    fflush (stdout);
+			printf( "\007" );
+			utf8_print( yourchar );
+			printf( " (%s) for ",code[yourcharnocase] );
+			utf8_print( correctchar );
+		    printf( "(%s)\n", code[correctchar] );
+		    fflush( stdout );
 		    linepos = 0;
 		  }
 
@@ -1690,7 +1702,7 @@ int             resync;
 
 		if (showtesting)
 		{
-		    printf ("%c", yourchar);
+		    utf8_print( yourchar );
 		    fflush (stdout);
 		}
 
@@ -2006,7 +2018,7 @@ report (void)
 		     jj++)
 		    printf (" ");
 	    }
-	    printf ("%c", (char) randomstr[ii]);
+	    utf8_print( (unsigned char) randomstr[ii]);
 	}
 	printf ("\n");
     }
