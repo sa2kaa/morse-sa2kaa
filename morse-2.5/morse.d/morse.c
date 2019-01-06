@@ -124,7 +124,7 @@ static int      testpointer = -1;
 static int      testlength = 0;
 static int      behindness = 0;
 static int      max_behindness = MAX_BEHINDNESS;
-static char     teststring[TESTBUFSZ];
+static unsigned char teststring[TESTBUFSZ];
 static int      yourpointer = -1;
 static int      yourlength = 0;
 static unsigned char yourstring[TESTBUFSZ];
@@ -249,7 +249,7 @@ static void            new_words_per_minute (void);
 static void            dowords (int  c); //OLTA
 static void            morse (int c);
 static void            show (char *s);
-static void            testaddchar (char c);
+static void            testaddchar (unsigned char c);
 static void            youraddchar (int c);
 static void            pollyou (void);
 static void            tone (float hertz, float duration, float amplitude);
@@ -574,14 +574,14 @@ struct sigaction handler;
     code[(int) ((unsigned char)'\344')] = ".-.-";   /* :a (also for ae), the same as <AA> */
     if (code[(int) '^'] != NULL) code[(int) '^'] = NULL;
     code[(int) ((unsigned char)'\340')] = ".--.-";  /* `a, oa (danish a with ring over it) */
-    code[(int) ((unsigned char)'\347')] = "----";   /* ch (bar-ch) */
-    code[(int) ((unsigned char)'\360')] = "..--.";  /* -d (eth, overstrike d with -) */
-    code[(int) ((unsigned char)'\350')] = "..-..";  /* `e */
-    code[(int) ((unsigned char)'\361')] = "--.--";  /* ~n */
+//    code[(int) ((unsigned char)'\347')] = "----";   /* ch (bar-ch) */
+//    code[(int) ((unsigned char)'\360')] = "..--.";  /* -d (eth, overstrike d with -) */
+//    code[(int) ((unsigned char)'\350')] = "..-..";  /* `e */
+//    code[(int) ((unsigned char)'\361')] = "--.--";  /* ~n */
     code[(int) ((unsigned char)'\366')] = "---.";   /* :o (also for oe) */
-    code[(int) ((unsigned char)'\374')] = "..--";   /* :u (also for ue) */
-    code[(int) ((unsigned char)'\376')] = ".--..";  /* ]p (thorn, overstrike ] with p) */
-    code[(int) ((unsigned char)'\247')] = ".-.-.."; /* paragraph */
+//    code[(int) ((unsigned char)'\374')] = "..--";   /* :u (also for ue) */
+//    code[(int) ((unsigned char)'\376')] = ".--..";  /* ]p (thorn, overstrike ] with p) */
+//    code[(int) ((unsigned char)'\247')] = ".-.-.."; /* paragraph */
     }
 
     if (user_charset)
@@ -1398,20 +1398,20 @@ char            c;
  * or ones for which isspace(c) is true.
  */
 static void
-testaddchar (char c)
+testaddchar (unsigned char c)
 {
+//	printf( "testaddchar %u ", c);//TODO olta remove
     testpointer = (testpointer + 1) % TESTBUFSZ;
     teststring[testpointer] = c;
 #ifdef DEBUG
     fprintf (stderr, " (%c,%d,%d) ", c, testlength, behindness); // TODO olta fix utf8 debug
 #endif
     testlength++;
-    if (testlength > TESTBUFSZ)
-    {
-	fprintf (stderr, "\n\nInput buffer queue overflow! Make TESTBUFSZ bigger!\n");
-	fprintf (stderr, "(Or don't fall so far behind)\n");
+    if (testlength > TESTBUFSZ) {
+		fprintf (stderr, "\n\nInput buffer queue overflow! Make TESTBUFSZ bigger!\n");
+		fprintf (stderr, "(Or don't fall so far behind)\n");
 
-	die ();
+		die ();
     }
 
 /*
@@ -1473,13 +1473,13 @@ static void processMultiCharStream(unsigned char c, void (*charHandler)(int))
 static void utf8_print(unsigned char c) {
 	switch( c ) {
 		case (unsigned char) '\340':
-			printf("\195\133"); // c385h
+			printf("\xc3\xa5");
 			break;
 		case (unsigned char) '\344':
-			printf("\195\132"); // c384h
+			printf("\xc3\xa4");
 			break;
 		case (unsigned char) '\366':
-			printf("\195\150"); // c396h
+			printf("\xc3\xb6");
 			break;
 		default:
 			printf("%c", c);
@@ -1558,11 +1558,9 @@ int             resync;
 
 	    yourchar = yourstring[(yourpointer - yourlength + 1 + yourinc + TESTBUFSZ) % TESTBUFSZ];
 	    if (isalpha (yourchar)) {
-			printf( "isalpha" );
 			yourcharnocase = yourchar - (isupper (yourchar) ? 'A' : 'a') + 'a';
 		}
 		else {
-			printf( "isnotalpha" );
 			yourcharnocase = yourchar;
 		}
 	    /* Did you type something rude? If so, just ignore it. */
