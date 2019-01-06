@@ -264,7 +264,8 @@ static void            cleanup ();
 
 static void processMultiCharStream(unsigned char c, void (*charHandler)(int)); // OLTA added.
 
-static void utf8_print(unsigned char c);
+static void utf8PrintChar(unsigned char c);
+static void utf8PrintLine(unsigned char *s);
 
 int
 main (int argc, char **argv)
@@ -691,7 +692,7 @@ struct sigaction handler;
 		    if (showletters)
 		    {
 			toneflush ();
-			utf8_print( yourchar );
+			utf8PrintChar( yourchar );
 			fflush (stdout);
 		    }
 
@@ -968,7 +969,7 @@ unsigned char           *wordp;
 		    linepos = 0;
 		  }
 
-		printf ("%s", word); // TODO OLTA add utf8 print line.
+		utf8PrintLine( word );
 
 		if (showmorse || showletters || wordsafter || showtesting)
 		{
@@ -1001,7 +1002,7 @@ unsigned char           *wordp;
 		    toneflush ();
 		    /* Give them a quick hint */
 		    printf( "[" );
-			utf8_print( *wordp );
+			utf8PrintChar( *wordp );
 			printf( "]" );
 		    fflush (stdout);
 
@@ -1133,9 +1134,10 @@ unsigned char           *wordp;
 	    if (testing)
 		testterminal ();
 
-	    if (wordsafter)
-	    {
-		printf (" (%s)", word); // TODO OLTA Add utf8 printLine
+	    if (wordsafter) {	
+			printf( "(" );
+			utf8PrintLine( word );
+			printf( ")" );
 	    }
 
 	    if (wordsbefore || wordsafter || showmorse)
@@ -1156,7 +1158,7 @@ unsigned char           *wordp;
 		if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE)
 		{
 		    if (showletters)
-			utf8_print( c );
+			utf8PrintChar( c );
 
 		    if (showtesting)
 			testaddchar (c);
@@ -1193,7 +1195,7 @@ unsigned char           *wordp;
 	    if (c != EOF && c != SILENTEOF && c != FREQU_TOGGLE)
 	    {
 		if (showletters)
-		    utf8_print( c );
+		    utf8PrintChar( c );
 
 		if (showtesting)
 		    testaddchar (c);
@@ -1282,7 +1284,7 @@ morse (int c)
 				printf ("<SN>");
     	}
 		else
-	    	utf8_print( c );
+	    	utf8PrintChar( c );
 
 		fflush (stdout);
     }
@@ -1383,7 +1385,7 @@ char            c;
 
 	if (showmorse)
 	{
-	    utf8_print( c );
+	    utf8PrintChar( c );
 	    fflush (stdout);
 #ifdef FLUSHCODE
 	    toneflush ();
@@ -1400,7 +1402,6 @@ char            c;
 static void
 testaddchar (unsigned char c)
 {
-//	printf( "testaddchar %u ", c);//TODO olta remove
     testpointer = (testpointer + 1) % TESTBUFSZ;
     teststring[testpointer] = c;
 #ifdef DEBUG
@@ -1470,7 +1471,7 @@ static void processMultiCharStream(unsigned char c, void (*charHandler)(int))
 /*
 *  Transcode selected characters from Latin-1 to UTF-8
 */
-static void utf8_print(unsigned char c) {
+static void utf8PrintChar(unsigned char c) {
 	switch( c ) {
 		case (unsigned char) '\340':
 			printf("\xc3\xa5");
@@ -1485,6 +1486,14 @@ static void utf8_print(unsigned char c) {
 			printf("%c", c);
 			break;
 	}
+}
+
+static void utf8PrintLine(unsigned char *s)
+{
+	const size_t length = strlen(s);
+	
+	for ( int i = 0; i < length; i++ )
+		utf8PrintChar( s[i] );
 }
 
 static void
@@ -1542,7 +1551,7 @@ int             resync;
 	    {
 		if (showtesting)
 		{
-		    utf8_print( correctchar );
+		    utf8PrintChar( correctchar );
 		    fflush (stdout);
 		}
 
@@ -1597,10 +1606,10 @@ int             resync;
 			  correctchar = teststring[(testpointer - testlength + 1 + testinc + TESTBUFSZ) % TESTBUFSZ];
 			  if (isspace (correctchar) || code[correctchar] == NULL)
 			    {
-			      if (showtesting) utf8_print ( correctchar );
+			      if (showtesting) utf8PrintChar ( correctchar );
 			    } else {
 			      printf("%s", enter_standout_mode );
-				  utf8_print( correctchar );
+				  utf8PrintChar( correctchar );
 				  printf("%s", exit_standout_mode);
 			    }
 			}
@@ -1627,7 +1636,7 @@ int             resync;
 		if (keepquiet > 0)
 		  {
 		    printf( "%s", enter_standout_mode );
-			utf8_print( correctchar );
+			utf8PrintChar( correctchar );
 		    printf( "%s", exit_standout_mode );
 
 		    fflush (stdout);
@@ -1645,9 +1654,9 @@ int             resync;
 		    } else
 			/* Beep using control-G */
 			printf( "\007" );
-			utf8_print( yourchar );
+			utf8PrintChar( yourchar );
 			printf( " (%s) for ",code[yourcharnocase] );
-			utf8_print( correctchar );
+			utf8PrintChar( correctchar );
 		    printf( "(%s)\n", code[correctchar] );
 		    fflush( stdout );
 		    linepos = 0;
@@ -1700,7 +1709,7 @@ int             resync;
 
 		if (showtesting)
 		{
-		    utf8_print( yourchar );
+		    utf8PrintChar( yourchar );
 		    fflush (stdout);
 		}
 
@@ -2016,7 +2025,7 @@ report (void)
 		     jj++)
 		    printf (" ");
 	    }
-	    utf8_print( (unsigned char) randomstr[ii]);
+	    utf8PrintChar( (unsigned char) randomstr[ii]);
 	}
 	printf ("\n");
     }
