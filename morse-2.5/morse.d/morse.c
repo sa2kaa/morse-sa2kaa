@@ -627,7 +627,7 @@ struct sigaction handler;
 	}
     }
 
-    words_per_minute = WORDS_PER_MINUTE;
+//    words_per_minute = WORDS_PER_MINUTE;
     fwords_per_minute = -1.;
 
     time(&starttime);
