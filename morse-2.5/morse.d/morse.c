@@ -66,6 +66,7 @@ cd morse*
 #include <signal.h>
 #include <stdbool.h>
 #include "beep.h"
+#include <ncurses.h> /* NEW */
 
 #define FREQUENCY	800.0
 #define FREQUENCY2	602.0
@@ -119,7 +120,7 @@ static bool     helpmeflag = false;
 static int      wordlen = MAXWORDLEN;
 static int      wordcount = -1;
 static time_t   starttime;
-static int      timeout = -1;
+static int      morseTimeOut = -1;
 static int      testpointer = -1;
 static int      testlength = 0;
 static int      behindness = 0;
@@ -270,14 +271,15 @@ static void utf8PrintLine(unsigned char *s);
 int
 main (int argc, char **argv)
 {
-extern char    *optarg;
-extern int      optind;
-int             ch;
-char           *p;
-int             ii;
-struct sigaction handler;
-
-    if (argc == 1 && isatty (fileno (stdin)))
+  extern char    *optarg;
+  extern int      optind;
+  int             ch;
+  char           *p;
+  int             ii;
+  struct sigaction handler;
+  initscr();
+  printw("Hello World"); refresh();
+  if (argc == 1 && isatty (fileno (stdin)))
     {
 /*
  * SELF DOC
@@ -391,9 +393,9 @@ struct sigaction handler;
 	    if (wordcount < 1) wordcount = -1;
 	    break;
 	case 'R':
-	    timeout = atoi (optarg);
-	    timeout *= 60;
-	    if (timeout < 1) timeout = -1;
+	    morseTimeOut = atoi (optarg);
+	    morseTimeOut *= 60;
+	    if (morseTimeOut < 1) morseTimeOut = -1;
 	    break;
 	case 'S':
 	    allprosigns = true;
@@ -704,8 +706,8 @@ struct sigaction handler;
 	    }
 	    yourlength -= jj;
 
-	    if (timeout > 0)
-	      if (difftime(time(NULL),starttime) > (double)timeout)
+	    if (morseTimeOut > 0)
+	      if (difftime(time(NULL),starttime) > (double)morseTimeOut)
 		break;
 	}
     }
@@ -717,7 +719,7 @@ struct sigaction handler;
 	randexp = 1. / (1. - 1. / (float) (RANDWORDLEN));
 	while (1)
 	{
-	    if ((wordcount == 0) || timeout == 0) break;
+	    if ((wordcount == 0) || morseTimeOut == 0) break;
 
 	    dowords (randomletter ());
 
@@ -751,15 +753,15 @@ struct sigaction handler;
 		else
 		    firsttime = false;
 
-		if ((wordcount == 0) || timeout == 0) break;
+		if ((wordcount == 0) || morseTimeOut == 0) break;
 
 		for (p = *argv; *p; ++p)
 		  {	
 			
 			processMultiCharStream( (unsigned char) *p, dowords); //OLTA
-		    if ((wordcount == 0) || timeout == 0) break;
+		    if ((wordcount == 0) || morseTimeOut == 0) break;
 		  }
-		if ((wordcount == 0) || timeout == 0) break;
+		if ((wordcount == 0) || morseTimeOut == 0) break;
 
 	    } while (*++argv);
 	}
@@ -768,7 +770,7 @@ struct sigaction handler;
 	    while ((ch = getchar ()) != EOF)
 	    {
 			processMultiCharStream( (unsigned char) ch, dowords); //OLTA
-			if ((wordcount == 0) || timeout == 0) break;
+			if ((wordcount == 0) || morseTimeOut == 0) break;
 	      }
 	}
     }
@@ -799,14 +801,15 @@ struct sigaction handler;
     toneflush ();
 
     if (showmorse || wordsbefore || wordsafter || showletters || showtesting)
-	printf ("\n");
+      printf ("\n");
     fflush (stdout);
 
     if (testing)
-	report ();
+      report();
 
 /* If you make any mistakes exit with a return code! */
-    cleanup ();
+    cleanup();
+    endwin();
     return (totalmisscount > 0);
 }
 
@@ -875,9 +878,9 @@ unsigned char           *wordp;
 	    int againcount;
 
 	    if (wordcount > 0) wordcount--;
-	    if (timeout > 0)
-	      if (difftime(time(NULL),starttime) > (double)timeout)
-		timeout = 0;
+	    if (morseTimeOut > 0)
+	      if (difftime(time(NULL),starttime) > (double)morseTimeOut)
+		morseTimeOut = 0;
 
 	    word[wordc] = '\0';
 

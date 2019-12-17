@@ -31,7 +31,7 @@ morseOSS:	morse.o beepOSS.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ morse.o beepOSS.o -lm
 
 morsePA:	morse.o beepPA.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o -lm $(PA_LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o -lm $(PA_LIBS) -lncurses
 
 morseALSA:	morse.o beepALSA.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(ALSA_CFLAGS) -o $@ morse.o beepALSA.o -lm $(ALSA_LIBS)
