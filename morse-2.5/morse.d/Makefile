@@ -1,7 +1,7 @@
 DEVICE=PA
 
 BEEPERS = beepLinux.c beepOSS.c beepX11.c beepALSA.c
-SOURCES = alarm.c morse.c alarm.h beep.h $(BEEPERS)
+SOURCES = alarm.c morse.c alarm.h beep.h $(BEEPERS) 
 
 # The flags necessary to link with the X11 libraries.
 X11LIBS = -L/usr/X11R6/lib -lX11
@@ -30,8 +30,8 @@ morseLinux:	morse.o beepLinux.o alarm.o
 morseOSS:	morse.o beepOSS.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ morse.o beepOSS.o -lm
 
-morsePA:	morse.o beepPA.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o -lm $(PA_LIBS) -lncurses
+morsePA:	morse.o beepPA.o morseGui.o
+	$(CC) $(CFLAGS) $(LDFLAGS) $(PA_CFLAGS) -o $@ morse.o beepPA.o morseGui.o -lm $(PA_LIBS) -lncurses
 
 morseALSA:	morse.o beepALSA.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(ALSA_CFLAGS) -o $@ morse.o beepALSA.o -lm $(ALSA_LIBS)
